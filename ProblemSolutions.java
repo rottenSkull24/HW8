@@ -72,19 +72,40 @@ class ProblemSolutions {
      * @return boolean          - True if all exams can be taken, else false.
      */
 
-    public boolean canFinish(int numExams, 
-                             int[][] prerequisites) {
-      
-        int numNodes = numExams;  // # of nodes in graph
+    public boolean canFinish(int numExams, int[][] prerequisites) {
+        int numNodes = numExams; // # of nodes in graph
+        ArrayList<Integer>[] adj = getAdjList(numNodes, prerequisites);
+        int[] inDegree = new int[numNodes];
+        Queue<Integer> queue = new LinkedList<>(); // queue for nodes with in-degree 0
 
-        // Build directed graph's adjacency list
-        ArrayList<Integer>[] adj = getAdjList(numExams, 
-                                        prerequisites); 
+        // compute in-degrees from adjacency list 
+        // (safe even if prerequisites array ordering varies)
+        for (int u = 0; u < numNodes; u++) {
+            for (int v : adj[u]) {
+                inDegree[v]++;
+            }
+        }
 
-        // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
-        return false;
+        for (int i = 0; i < numNodes; i++) { // enqueue nodes with in-degree 0
+            if (inDegree[i] == 0) {
+                queue.offer(i);
+            }
+        }
 
+        int count = 0; // count of processed nodes
+        while (!queue.isEmpty()) { // process nodes with in-degree 0
+            int current = queue.poll();
+            count++;
+            for (int neighbor : adj[current]) { // decrease in-degree of neighbors
+                if (--inDegree[neighbor] == 0) {
+                    queue.offer(neighbor);
+                }
+            }
+        }
+
+        return count == numNodes; // if count matches numNodes, no cycle exists
     }
+
 
 
     /**
