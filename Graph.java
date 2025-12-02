@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Jesus Ortega / 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -99,12 +99,33 @@ public class Graph {
    * This method returns the value of the root vertex, where root is defined in
    * this case as a node that has no incoming edges. If no root vertex is found
    * and/or more than one root vertex, then return -1.
+   * @return int - value of root or -1 if no root is found or if multiple roots.
+   * @precondition - root as a node with no incoming edges.
+   * @postcondition - graph is not modified.
    * 
    */
   
   public int findRoot() {
+    int rootValue = -1;
 
-    // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME/SECTION AT TOP OF FILE
-    return -1;
+    int[] incomingEdges = new int[numVertices]; // Initialize incoming edges.
+    for (int i = 0; i < numVertices; i++) { 
+      for (Integer dest : adjListArr[i]) { // for each destination vertex in adjacency list.
+        incomingEdges[dest]++; // increment incoming edge count for destination vertex which will be used to find .
+      }
+    }
+
+    int rootCount = 0; // count of roots found.
+    for (int i = 0; i < numVertices; i++) { // check for vertices (a root) with no incoming edges.
+      if (incomingEdges[i] == 0) {
+        rootValue = vertexValues.get(i); // get the value of the root vertex.
+        rootCount++; 
+      }
+    }
+    if (rootCount != 1) { // if no root or if there are more roots are found, return -1.
+      rootValue = -1;
+    }
+
+    return rootValue;
   } 
 }
