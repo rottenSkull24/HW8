@@ -210,9 +210,6 @@ class ProblemSolutions {
                 }
             }
         }
-
-        // YOUR CODE GOES HERE - you can add helper methods, you do not need
-        // to put all code in this method.
         boolean[] visited = new boolean[numNodes];
         int groups = 0;
 
@@ -238,3 +235,4 @@ class ProblemSolutions {
 
         return groups;
     }
+}
