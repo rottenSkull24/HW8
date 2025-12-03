@@ -186,7 +186,7 @@ class ProblemSolutions {
 
     public int numGroups(int[][] adjMatrix) {
         int numNodes = adjMatrix.length;
-        Map<Integer,List<Integer>> graph = new HashMap();
+        Map<Integer,List<Integer>> graph = new HashMap<>();
         int i = 0, j =0;
 
         /*
@@ -199,9 +199,9 @@ class ProblemSolutions {
             for(j = 0; j < numNodes; j++){
                 if( adjMatrix[i][j] == 1 && i != j ){
                     // Add AdjList for node i if not there
-                    graph.putIfAbsent(i, new ArrayList());
+                    graph.putIfAbsent(i, new ArrayList<>());
                     // Add AdjList for node j if not there
-                    graph.putIfAbsent(j, new ArrayList());
+                    graph.putIfAbsent(j, new ArrayList<>());
 
                     // Update node i adjList to include node j
                     graph.get(i).add(j);
@@ -213,7 +213,28 @@ class ProblemSolutions {
 
         // YOUR CODE GOES HERE - you can add helper methods, you do not need
         // to put all code in this method.
-        return -1;
-    }
+        boolean[] visited = new boolean[numNodes];
+        int groups = 0;
 
-}
+        for (int node = 0; node < numNodes; node++) {
+            if (visited[node]) continue;
+            groups++;
+            // BFS/DFS from node to mark entire component
+            Deque<Integer> stack = new ArrayDeque<>();
+            stack.push(node);
+            visited[node] = true;
+            while (!stack.isEmpty()) {
+                int cur = stack.pop();
+                List<Integer> neighbors = graph.get(cur);
+                if (neighbors == null) continue;
+                for (int nei : neighbors) {
+                    if (!visited[nei]) {
+                        visited[nei] = true;
+                        stack.push(nei);
+                    }
+                }
+            }
+        }
+
+        return groups;
+    }
